@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
   <link rel="stylesheet" href="styles.css" />
+
   <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
   <script type="text/javascript">
-  $(document).bind('mobileinit',function(){
-   $.mobile.selectmenu.prototype.options.nativeMenu = false;
-});
+    // Need to bind to mobileinit before jQ mobile library is loaded
+    $(document).bind('mobileinit',function(){
+      $.mobile.selectmenu.prototype.options.nativeMenu = false;
+    });
   </script>
   <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
   <script src="tartanator.js"></script>
+
 </head> 
 <body> 
 

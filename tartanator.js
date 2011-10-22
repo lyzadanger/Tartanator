@@ -1,18 +1,20 @@
 (function () {
 
-  var $colorList, $submitFormBtn, $sizeInputUI, $colorInputUI, $nameInput;
+  var $page, $colorList, $submitFormBtn, $sizeInputUI, $colorInputUI, $nameInput;
 
-  // pagecreate fires before jQuery Mobile manipulates the DOM
-  $('[data-role="page"]').live('pagecreate', function () {
+  $page = $('[data-role="page"]');
+
+  // Triggered when the page has been created in the DOM (via ajax or other) 
+  // but before all widgets have had an opportunity to enhance the contained markup. 
+  // - We'll only show one set of inputs and handle others with the "add color" button
+  $page.live('pagecreate', function () {
     jQuery.ajaxSettings.traditional = true;
-    // Only show one set of inputs. 
-    // We'll dynamically handle everything else with the "add color" button
     $('.colorset:not(:first)').remove();
     buildAddButton();
   });
 
-  // pageinit fires after jQuery Mobile DOM elements are ready to go
-  $('[data-role="page"]').live('pageinit', init);
+  // Triggered after jQuery Mobile DOM elements have been initialized
+  $page.live('pageinit', init);
 
   function init () {
     $colorList     = $('#colorlist');
@@ -21,40 +23,39 @@
     $sizeSlider    = $sizeInputUI.find('input');
     $colorInputUI  = $('.color-input');
     $nameInput     = $('#tartan_name');
-    $coloroptions  = $('#color-0 option');
-    $colorinputs   = $('#color-0-menu li a');
 
     $submitFormBtn.add('.color-input label').hide();
-    $colorList.click(onColorListChange);
+    $('#color-0 option').each(styleColorListItem);
     setColorSelectStyle();
+
+    $colorList.click(onColorListChange);
     $sizeSlider.change(onStitchSizeChange);
     $colorInputUI.change(onColorSelectChange);
     $('#tartanator_form').submit(onFormSubmit);
-    $coloroptions.each(function(index, value) {
-      var hex = $(this).val();
-      if (hex) {
-        $colorinputs.eq(index).css({
-          'borderLeft'  : '25px solid ' + hex
-        });
-      }
-    });
   }
-  
+
+  // Add a color indication to each line of the custom jQM select menu
+  function styleColorListItem (index, value) {
+    var hex    = $(this).val();
+    if (hex) {
+      $('#color-0-menu li a').eq(index).css('borderLeft', '25px solid ' + hex);
+    }
+  }
+
   // Create and add the add-color button to the DOM
   function buildAddButton() {
     var li = $('<li></li>').attr({
-      'data-role'     : 'fieldcontain',
-      'id'            : 'add-color-container'
+      'data-role' : 'fieldcontain',
+      'id'        : 'add-color-container'
     });
     var button = $('<input type="button">').attr({
-      name        : 'addcolor',
+      'name'      : 'addcolor',
       'data-role' : 'button',
-      value       : 'Add This Color',
+      'value'     : 'Add This Color',
       'data-icon' : 'plus'
     });
     button.click(onAddColor);
-    $(li).append(button);
-    $('#tartanator_form_list').append(li);
+    $('#tartanator_form_list').append(li.append(button));
   }
 
   // User clicks the "add color" button
@@ -69,9 +70,9 @@
       onColorListChange();
     } else {
      $.mobile.changePage( "dialogs/size-color-required.html", {
-	     transition: "pop",
-	     reverse: false,
-	     role: 'dialog'
+       transition: "pop",
+       reverse: false,
+       role: 'dialog'
       });	
     }
     return false;
@@ -116,9 +117,9 @@
     var url;
     if (!$nameInput.val() || !$colorList.find('li').length) {
      $.mobile.changePage( "dialogs/tartan-data-required.html", {
-	     transition: "pop",
-	     reverse: false,
-	     role: 'dialog'
+       transition: "pop",
+       reverse: false,
+       role: 'dialog'
       });	
       return false;
     }
@@ -142,28 +143,17 @@
       'background': backgroundHex || '',
       'color'     : isDarkColor(backgroundHex) ? '#fff' : '#000'
     });
-
   };
-  // Given a hex value, do a dirty calculation to indicate whether 
-  // black or white should be used as a contrast
+
+  // Given a (string) hex value, do a quick & dirty calculation to indicate whether 
+  // black or white should be used as a contrast color
   function isDarkColor (hex) {
     var sum;
     if (!hex) return false;
-    hex = hex.match(/[^#]+/)[0];
+    hex = (hex + '').match(/[^#]+/)[0];
     if (hex.length == 3) hex += hex;
     sum = parseInt(hex.substr(0,2), 16) + parseInt(hex.substr(2,2), 16) + parseInt(hex.substr(4,2), 16);
     return (sum / 3) < 128;
   };
-  $(function () {
-    // Despite the docs (http://jquerymobile.com/test/docs/api/events.html), 
-    // jQuery Mobile doesn't trigger pageinit when the DOM loads
-    // and pagecreate is triggered too early (DOM elements not ready)
-    // Until that's fixed, we'll manually fire pageinit on DOM ready
-    $('[data-role="page"]').trigger('pageinit');
-
-    // Hack! Work around the iOS "zoom" bug 
-    // by ensuring that the select text size is so big, mobile safari will never want to zoom
-    if ((/iPhone|iPad/).test(navigator.userAgent)) $('select').css('fontSize', '45px');
-  });
 
 }());
