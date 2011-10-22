@@ -1,6 +1,5 @@
 (function () {
-
-  var $page, $colorList, $submitFormBtn, $sizeInputUI, $colorInputUI, $nameInput;
+  var $page, $colorList, $submitFormBtn, $sizeInputUI, $colorInputUI, $nameInput, $sizeSlider;
 
   $page = $('[data-role="page"]');
 
@@ -8,7 +7,7 @@
   // but before all widgets have had an opportunity to enhance the contained markup. 
   // - We'll only show one set of inputs and handle others with the "add color" button
   $page.live('pagecreate', function () {
-    jQuery.ajaxSettings.traditional = true;
+    $.ajaxSettings.traditional = true;
     $('.colorset:not(:first)').remove();
     buildAddButton();
   });
@@ -76,7 +75,7 @@
       });	
     }
     return false;
-  };
+  }
 
   // Upate the DOM with the new color
   // Create and add hidden fields to contain values for the form
@@ -93,7 +92,7 @@
     $colorInputUI.find('select').val('').selectmenu('refresh');
     $sizeInputUI.find('input').slider('refresh');
     onColorListChange();
-  };
+  }
 
   // Called when the list of added colors changes
   // e.g., when adding a new color or deleting an existing one
@@ -103,7 +102,7 @@
     $submitFormBtn[$colorList.find('li').length ? 'show' : 'hide']();
     $colorList.listview('refresh'); 
     setColorSelectStyle();
-  };
+  }
   
   // User has changed the value of the stich size; only allow even values
   function onStitchSizeChange(changeEvent) {
@@ -129,7 +128,7 @@
     $(this).attr('action', url + '?name=' + $nameInput.val() + '&width=300');
     $('[name=redirect_to_image]').val('false');
     return true;
-  };
+  }
   
   function onColorSelectChange() {
     setColorSelectStyle();
@@ -143,7 +142,7 @@
       'background': backgroundHex || '',
       'color'     : isDarkColor(backgroundHex) ? '#fff' : '#000'
     });
-  };
+  }
 
   // Given a (string) hex value, do a quick & dirty calculation to indicate whether 
   // black or white should be used as a contrast color
@@ -154,6 +153,6 @@
     if (hex.length == 3) hex += hex;
     sum = parseInt(hex.substr(0,2), 16) + parseInt(hex.substr(2,2), 16) + parseInt(hex.substr(4,2), 16);
     return (sum / 3) < 128;
-  };
+  }
 
 }());
