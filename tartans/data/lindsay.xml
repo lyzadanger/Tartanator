@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<tartan name="Lindsay" stripe="2" scale="1">
+  <description>Clan tartan</description>
+  <stitches>
+    <stitch color="#660000" count="6"/>
+    <stitch color="#274086" count="4"/>
+    <stitch color="#660000" count="48"/>
+    <stitch color="#274086" count="16"/>
+    <stitch color="#008000" count="4"/>
+    <stitch color="#274086" count="4"/>
+    <stitch color="#008000" count="4"/>
+    <stitch color="#274086" count="4"/>
+    <stitch color="#008000" count="40"/>
+  </stitches>
+</tartan>

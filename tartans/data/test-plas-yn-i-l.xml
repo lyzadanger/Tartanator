@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tartan name="Test Plas-yn-I&#xE2;l" stripe="2" scale="1">
+  <description>I don't know what will happen here.</description>
+  <stitches>
+    <stitch color="#999999" count="2"/>
+    <stitch color="#ffffff" count="2"/>
+    <stitch color="#000000" count="2"/>
+  </stitches>
+</tartan>

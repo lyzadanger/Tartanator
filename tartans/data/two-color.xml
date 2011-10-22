@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<tartan name="Two-color" stripe="2" scale="1">
+  <description>Simple two-color pattern.</description>
+  <stitches>
+    <stitch color="#000000" count="2"/>
+    <stitch color="#ffffff" count="2"/>
+  </stitches>
+</tartan>

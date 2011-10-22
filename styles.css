@@ -1,0 +1,21 @@
+#colorlist li {
+  cursor: pointer;
+  padding-bottom: 0.7em;
+  padding-top: 0.7em;
+  padding-left: 30px;
+  text-shadow: none;
+}
+#colorlist li a {
+  position: absolute;
+}
+#colorlist li .ui-li {
+  border-top: 0;
+}
+
+.placeholder {
+  color: #999;
+}
+.ui-field-contain {
+  border: none;
+  padding: 0.5em;
+}

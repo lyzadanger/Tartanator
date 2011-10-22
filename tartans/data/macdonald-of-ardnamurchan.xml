@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<tartan name="MacDonald of Ardnamurchan" stripe="2" scale="1">
+  <description>Clan tartan</description>
+  <stitches>
+    <stitch color="#cc0000" count="8"/>
+    <stitch color="#000000" count="16"/>
+    <stitch color="#cc0000" count="8"/>
+    <stitch color="#000000" count="16"/>
+    <stitch color="#cc0000" count="24"/>
+    <stitch color="#000000" count="2"/>
+    <stitch color="#ffec00" count="4"/>
+  </stitches>
+</tartan>

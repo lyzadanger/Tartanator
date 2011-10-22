@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<tartan name="Birrell" scale="1" stripe="2">
+<stitches>
+	<stitch color="#663399" count="16" />
+	<stitch color="#ffffff" count="4" />
+	<stitch color="#cc0000" count="8" />
+	<stitch color="#ff3333" count="4" />
+	<stitch color="#663399" count="4" />
+	<stitch color="#ff3333" count="4" />
+	<stitch color="#cc0000" count="8" />
+	<stitch color="#ffffff" count="4" />
+	<stitch color="#009900" count="32" />
+	<stitch color="#ffffff" count="4" />
+	<stitch color="#663399" count="8" />
+	<stitch color="#0066cc" count="4" />
+	<stitch color="#ffffff" count="4" />
+	<stitch color="#0066cc" count="4" />
+	<stitch color="#663399" count="8" />
+	<stitch color="#ffffff" count="4" />
+	<stitch color="#cc0000" count="64" />
+</stitches>
+</tartan>

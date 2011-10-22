@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tartan name="Kincaid" stripe="2" scale="1">
+  <description>Clan tartan</description>
+  <stitches>
+    <stitch color="#000000" count="22"/>
+    <stitch color="#008000" count="34"/>
+    <stitch color="#cc0000" count="6"/>
+  </stitches>
+</tartan>

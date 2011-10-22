@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<tartan name="Lauder" stripe="2" scale="1">
+  <description>Clan tartan</description>
+  <stitches>
+    <stitch color="#cc0000" count="4"/>
+    <stitch color="#008000" count="30"/>
+    <stitch color="#000000" count="8"/>
+    <stitch color="#008000" count="6"/>
+    <stitch color="#274086" count="16"/>
+    <stitch color="#008000" count="6"/>
+  </stitches>
+</tartan>

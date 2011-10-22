@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<tartan name="Lennox" stripe="2" scale="1">
+  <stitches>
+    <stitch color="#cc0000" count="4"/>
+    <stitch color="#660000" count="2"/>
+    <stitch color="#cc0000" count="20"/>
+    <stitch color="#660000" count="4"/>
+    <stitch color="#5b6333" count="20"/>
+    <stitch color="#ffffff" count="2"/>
+    <stitch color="#5b6333" count="4"/>
+  </stitches>
+</tartan>

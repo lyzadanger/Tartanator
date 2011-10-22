@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<tartan name="Leslie, Dress" stripe="2" scale="1">
+  <description>Dress variant of the Leslie tartan.</description>
+  <stitches>
+    <stitch color="#000000" count="2"/>
+    <stitch color="#cc0000" count="64"/>
+    <stitch color="#274086" count="32"/>
+    <stitch color="#cc0000" count="8"/>
+    <stitch color="#000000" count="12"/>
+    <stitch color="#ffec00" count="2"/>
+    <stitch color="#000000" count="12"/>
+    <stitch color="#cc0000" count="8"/>
+  </stitches>
+</tartan>

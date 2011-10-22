@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<tartan name="Fox Hunting" stripe="2" scale="1">
+  <description>Designed by Jeffrey K MacArthur-Fox of Bolton, Lancashire, England. A personal tartan but intended for all those of the name Fox or with Fox in their name.</description>
+  <stitches>
+    <stitch color="#cc0000" count="4"/>
+    <stitch color="#000000" count="2"/>
+    <stitch color="#008000" count="36"/>
+    <stitch color="#000000" count="2"/>
+    <stitch color="#274086" count="18"/>
+    <stitch color="#ffec00" count="4"/>
+    <stitch color="#274086" count="18"/>
+    <stitch color="#000000" count="2"/>
+  </stitches>
+</tartan>
