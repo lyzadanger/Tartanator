@@ -43,6 +43,8 @@
   }
 
   // Create and add the add-color button to the DOM
+  // This is the button that adds each color-size combo to the "list"
+  // of tartan pattern elements
   function buildAddButton() {
     var li = $('<li></li>').attr({
       'data-role' : 'fieldcontain',
@@ -65,7 +67,7 @@
         name   = select.find(':selected').text(),
         hex    = select.val(),
         size   = form.find('.size-input input').val();
-    if (hex && size) {
+    if (hex && size) { // Everything is OK
       addColor(name, size, hex);
       onColorListChange();
     } else {
@@ -78,7 +80,7 @@
     return false;
   }
 
-  // Upate the DOM with the new color
+  // "Add" the color: Upate the DOM with the new color
   // Create and add hidden fields to contain values for the form
   function addColor (colorName, colorSize, colorValue) {
     var colorItem = [
@@ -95,7 +97,7 @@
     onColorListChange();
   }
 
-  // Called when the list of added colors changes
+  // Called when the list of added color-size combos changes
   // e.g., when adding a new color or deleting an existing one
   function onColorListChange (deleteClickEvent) {
     var $li;
@@ -113,6 +115,7 @@
     }
   }
 
+  // Submit the form
   function onFormSubmit () {
     var url;
     if (!$nameInput.val() || !$colorList.find('li').length) {
@@ -131,6 +134,7 @@
     return true;
   }
   
+  // When a COLOR is selected from the select list
   function onColorSelectChange() {
     setColorSelectStyle();
     $('#size-0').focus();
