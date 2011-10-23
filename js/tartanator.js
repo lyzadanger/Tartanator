@@ -1,4 +1,5 @@
 (function () {
+"use strict";
   var $page, $colorList, $submitFormBtn, $sizeInputUI, $colorInputUI, $nameInput, $sizeSlider;
 
   $page = $('[data-role="page"]');
@@ -154,5 +155,7 @@
     sum = parseInt(hex.substr(0,2), 16) + parseInt(hex.substr(2,2), 16) + parseInt(hex.substr(4,2), 16);
     return (sum / 3) < 128;
   }
+
+eval('');
 
 }());
