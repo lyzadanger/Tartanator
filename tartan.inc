@@ -12,11 +12,13 @@ class LyzaTartan {
   private $weave;
   private $width;
   private $height;
+  private $filename;
 
   private $ready;
   
   function __construct($name='') {
     $this->name = $name;
+    $this->setPatternScale(1);    // Default pattern multiplier
     $this->setStripeSize(2);      // Default stripe size is 2
     $this->ready = false;
   }
@@ -27,19 +29,22 @@ class LyzaTartan {
    * by changes to its attributes.
    */
   private function init() {
-    $this->weft = array();
-    $this->warp = array();
-    $this->width = $this->height = 0;
-    $this->weave = array();
+    $this->weft       = array();
+    $this->warp       = array();
+    $this->width      = $this->height = 0;
+    $this->weave      = array();
+    
     $this->buildPattern();
     $this->buildWeave();
-    $this->ready = true;
+    
+    $this->ready      = true;
   }
   
   /**
    * Populate tartan attributes from XML file
    */
-  public function fromXml($filename) {
+  public function fromXml($name) {
+    $filename = $this->getFilename($name);
     if (file_exists($filename)) {
       $xml = simplexml_load_file($filename);
       if ($xml) {
@@ -53,45 +58,15 @@ class LyzaTartan {
         $stripe = (string) $xml['stripe'];
         $this->setSett($sett);
         $this->setStripeSize($stripe);
-        $this->setPatternScale(1);
+        $this->setPatternScale($scale);
+        $this->filename = $filename;
         $this->init();
         return TRUE;
       }
     }
     return FALSE;
   }
-  /**
-   * Setters
-   */
-  public function setSett($sett) {
-    $this->sett = $sett;
-    $this->ready = false;
-  }
-  public function setPatternScale($scale) {
-    $this->patternScale = $scale;
-    $this->ready = false;
-  }
-  public function setStripeSize($size) {
-    $this->stripe = $size;
-    $this->ready = false;
-  }
-  public function setScale($pattern, $sett=2) {
-    $this->setPatternScale($pattern);
-    $this->setStripeSize($sett);
-    $this->ready = false;
-  }
-  public function setDynamicScale($target_width) {
-    $this->setPatternScale(1);
-    if (!$this->ready) {
-      $this->init();
-    }
-    $factor = $target_width / $this->width;
-    $this->patternScale = $factor;
-    $this->ready = false;
-  }
-  public function setDescription($description) {
-    $this->description = $description;
-  }
+
   
   /**
    * Using the current state of the attributes, build the
@@ -276,26 +251,10 @@ class LyzaTartan {
     return $rgbArray;
   }
   
-  public static function toFilename($name) {
-    
-  }
-  
-  public static function fromFilename($name) {
-  
-  }
-  
-  public static function fromURLName($name) {
-  
-  }
-
   public static function sanitize($string = '', $is_filename = FALSE) {
     $string = urldecode(stripslashes($string));
     $string = preg_replace('/[^\w\-'. ($is_filename ? '~_\.' : ''). ']+/u', '-', $string);
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
-  }
-  
-  public function getNicename() {
-    return self::sanitize($this->name, TRUE);
   }
   
   public function getFilename() {
@@ -335,5 +294,38 @@ class LyzaTartan {
       }
     }
     return $tartan_xml;
+  }
+  
+  /**
+   * Setters
+   */
+  public function setSett($sett) {
+    $this->sett = $sett;
+    $this->ready = false;
+  }
+  public function setPatternScale($scale) {
+    $this->patternScale = $scale;
+    $this->ready = false;
+  }
+  public function setStripeSize($size) {
+    $this->stripe = $size;
+    $this->ready = false;
+  }
+  public function setScale($pattern, $sett=2) {
+    $this->setPatternScale($pattern);
+    $this->setStripeSize($sett);
+    $this->ready = false;
+  }
+  public function setDynamicScale($target_width) {
+    $this->setPatternScale(1);
+    if (!$this->ready) {
+      $this->init();
+    }
+    $factor = $target_width / $this->width;
+    $this->patternScale = $factor;
+    $this->ready = false;
+  }
+  public function setDescription($description) {
+    $this->description = $description;
   }
 }
