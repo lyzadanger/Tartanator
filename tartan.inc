@@ -21,8 +21,8 @@ class LyzaTartan {
 
   function __construct($name, $sett=array(), $pattern_scale=1) {
     $this->name = $name;
-    $this->set_sett($sett);
-    $this->set_scale($pattern_scale, 2);
+    $this->setSett($sett);
+    $this->setScale($pattern_scale, 2);
     $this->ready = false;
   }
   /**
@@ -36,15 +36,15 @@ class LyzaTartan {
     $this->warp = array();
     $this->width = $this->height = 0;
     $this->weave = array();
-    $this->build_pattern();
-    $this->build_weave();
+    $this->buildPattern();
+    $this->buildWeave();
     $this->ready = true;
   }
   
   /**
    * Populate tartan attributes from XML file
    */
-  public function from_xml($filename) {
+  public function fromXml($filename) {
     if (file_exists($filename)) {
       $xml = simplexml_load_file($filename);
       if ($xml) {
@@ -56,9 +56,9 @@ class LyzaTartan {
         }
         $scale = (string) $xml['scale'];
         $stripe = (string) $xml['stripe'];
-        $this->set_sett($sett);
-        $this->set_stripe_size($stripe);
-        $this->set_pattern_scale(1);
+        $this->setSett($sett);
+        $this->setStripeSize($stripe);
+        $this->setPatternScale(1);
         $this->init();
         return TRUE;
       }
@@ -68,25 +68,25 @@ class LyzaTartan {
   /**
    * Setters
    */
-  public function set_sett($sett) {
+  public function setSett($sett) {
     $this->sett = $sett;
     $this->ready = false;
   }
-  public function set_pattern_scale($scale) {
+  public function setPatternScale($scale) {
     $this->pattern_scale = $scale;
     $this->ready = false;
   }
-  public function set_stripe_size($size) {
+  public function setStripeSize($size) {
     $this->stripe = $size;
     $this->ready = false;
   }
-  public function set_scale($pattern, $sett=2) {
-    $this->set_pattern_scale($pattern);
-    $this->set_stripe_size($sett);
+  public function setScale($pattern, $sett=2) {
+    $this->setPatternScale($pattern);
+    $this->setStripeSize($sett);
     $this->ready = false;
   }
-  public function set_dynamic_scale($target_width) {
-    $this->set_pattern_scale(1);
+  public function setDynamicScale($target_width) {
+    $this->setPatternScale(1);
     if (!$this->ready) {
       $this->init();
     }
@@ -94,10 +94,10 @@ class LyzaTartan {
     $this->pattern_scale = $factor;
     $this->ready = false;
   }
-  public function set_description($description) {
+  public function setDescription($description) {
     $this->description = $description;
   }
-  public function get_description() {
+  public function getDescription() {
     return $this->description;
   }
   
@@ -106,13 +106,13 @@ class LyzaTartan {
    * warp and weft arrays to be used for generating a visual
    * representation of the pattern.
    */
-  private function build_pattern() {
+  private function buildPattern() {
     $this->warp = array();
     $this->weft = array();
     $count = 0;
     for($i = 0; $i < sizeof($this->sett); $i++) { // Out
       $threads = $this->sett[$i];
-      $this->warp = array_merge($this->warp, $this->build_chunk($threads));
+      $this->warp = array_merge($this->warp, $this->buildChunk($threads));
     }
     for($i = sizeof($this->sett) - 1; $i >= 0; $i--) { // Back
       // Pivots would matter HERE
@@ -123,7 +123,7 @@ class LyzaTartan {
         continue;
       }
       $threads = $this->sett[$i];
-      $this->warp = array_merge($this->warp, $this->build_chunk($threads));
+      $this->warp = array_merge($this->warp, $this->buildChunk($threads));
     }
     $this->weft = $this->warp;
     $this->width = $this->height = sizeof($this->weft);
@@ -133,7 +133,7 @@ class LyzaTartan {
    * Utility method to build chunks (subsections) of the pattern
    * for the warp and the weft.
    */
-  private function build_chunk($threads) {
+  private function buildChunk($threads) {
     $my_count = $threads['count'] * $this->pattern_scale;
     $my_color = 0;
     if (is_string($threads['color']) && strpos($threads['color'], '#') !== FALSE) {
@@ -150,7 +150,7 @@ class LyzaTartan {
    * This is sort of like a rasterizing method. Using the current
    * warp and weft, "weave" together a matrix of colors.
    */
-  private function build_weave() {
+  private function buildWeave() {
     $this->weave = array();
     $s = $this->stripe;
     $warp       = true;
@@ -190,7 +190,7 @@ class LyzaTartan {
   public function buildImage($width=NULL) {
     // TODO: Check to see if image file already exists
     if ($width) {
-      $this->set_dynamic_scale($width);
+      $this->setDynamicScale($width);
     }
     if (!$this->ready) {
       $this->init();
@@ -302,22 +302,22 @@ class LyzaTartan {
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
   }
   
-  public function get_nicename() {
+  public function getNicename() {
     return self::sanitize($this->name, TRUE);
   }
   
-  public function get_filename() {
+  public function getFilename() {
     return TARTAN_XML_DIR . self::sanitize($this->name) . '.xml';
   }
 
-  public function to_xml($to_file=TRUE) {
+  public function toXml($to_file=TRUE) {
     $tartan_xml = '';
     $tartan  = new SimpleXMLElement('<tartan />');
     $tartan->addAttribute('name', $this->name);
     $tartan->addAttribute('stripe', $this->stripe);
     $tartan->addAttribute('scale', 1);
-    if ($this->get_description()) {
-      $tartan->addChild('description', $this->get_description());
+    if ($this->getDescription()) {
+      $tartan->addChild('description', $this->getDescription());
     }
     $stitches = $tartan->addChild('stitches');
     foreach ($this->sett as $settlet) {
