@@ -12,7 +12,8 @@ class LyzaTartan {
   private $weave;
   private $width;
   private $height;
-  private $filename;
+  private $XMLFilename;
+  private $base;
 
   private $ready;
   
@@ -44,7 +45,7 @@ class LyzaTartan {
    * Populate tartan attributes from XML file
    */
   public function fromXml($name) {
-    $filename = $this->getFilename($name);
+    $filename = $this->getXMLFilename(FALSE);
     if (file_exists($filename)) {
       $xml = simplexml_load_file($filename);
       if ($xml) {
@@ -59,7 +60,7 @@ class LyzaTartan {
         $this->setSett($sett);
         $this->setStripeSize($stripe);
         $this->setPatternScale($scale);
-        $this->filename = $filename;
+        $this->XMLFilename = $filename;
         $this->init();
         return TRUE;
       }
@@ -221,44 +222,42 @@ class LyzaTartan {
     }
   }
   
-  /**
-   * Utility methods to convert colors
-   */
-  private function rgb_to_int($r, $g, $b, $a=NULL) {
-    if (!$a) {
-      return ($r << 16 | $g << 8 | $b);
-    }
-    else {
-      return ($a << 24 | $r << 16 | $g << 8 | $b);
-    }
-  }
-  // Don't try this with a 32-bit integer
-  private function int_to_rgb($rgb) {
-    $r = ($rgb >> 16) & 0xFF;
-    $g = ($rgb >> 8) & 0xFF;
-    $b = $rgb & 0xFF;
-    return array($r, $g, $b);
-  }
-  private function hex_to_rgb($hex) {
-    $hex = preg_replace("/[^0-9A-Fa-f]/", '', $hex); 
-    $rgbArray = array(); 
-    if (strlen($hex) == 6) { //If a proper hex code, convert using bitwise operation. No overhead... faster
-      $colorVal = hexdec($hex);
-      $rgbArray[] = 0xFF & ($colorVal >> 0x10);
-      $rgbArray[] = 0xFF & ($colorVal >> 0x8);
-      $rgbArray[] = 0xFF & $colorVal;
-    }
-    return $rgbArray;
-  }
   
-  public static function sanitize($string = '', $is_filename = FALSE) {
+  public static function sanitize($string = '') {
+    $is_filename = TRUE;
     $string = urldecode(stripslashes($string));
     $string = preg_replace('/[^\w\-'. ($is_filename ? '~_\.' : ''). ']+/u', '-', $string);
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
   }
   
-  public function getFilename() {
-    return TARTAN_XML_DIR . self::sanitize($this->name) . '.xml';
+  public function getXMLFilename($test_exists=FALSE) {
+    if ($this->XMLFilename && !$test_exists) {
+      return $this->XMLFilename;
+    }
+    $filename = sprintf('%s%s.xml', TARTAN_XML_DIR, $this->getBaseName($test_exists));
+    return $filename;
+  }
+  
+  private function getBaseName($test_exists) {
+    $base = self::sanitize($this->name);
+    if ($test_exists) {
+      $candidate = TARTAN_XML_DIR . $base . '.xml';
+      $candidate_base = $base;
+      $tries = 0;
+      while (file_exists($candidate) && $tries < 50) {
+        $tries++;
+        $candidate_base = $base . '-' . (string) $tries;
+        $candidate = sprintf("%s%s.xml", TARTAN_XML_DIR, $candidate_base);
+      }
+      // Tartan doesn't get to "own" this filename until something is written TO it
+      // But it owns the basename, yes?
+      $this->base = $candidate_base;
+      return $candidate_base;  
+    }
+    else {
+      $this->base = $base;
+      return $base;
+    }
   }
 
   /*
@@ -275,12 +274,14 @@ class LyzaTartan {
       if (!$this->name) {
         return false;
       }
-      $fp = fopen(TARTAN_XML_DIR . self::sanitize($this->name, TRUE) . '.xml', 'w');
+      // TODO: UPDATE ME!!!
+      $filename = $this->getXMLFilename(TRUE);
+      $fp = fopen($filename, 'w');
       if ($fp) {
         fwrite($fp, $dom->saveXML());
         fclose($fp);
       }
-    
+      $this->XMLFilename = $filename;
   }
 
   /*
@@ -337,4 +338,35 @@ class LyzaTartan {
   public function setDescription($description) {
     $this->description = $description;
   }
+
+  /**
+   * Utility methods to convert colors
+   */
+  private function rgb_to_int($r, $g, $b, $a=NULL) {
+    if (!$a) {
+      return ($r << 16 | $g << 8 | $b);
+    }
+    else {
+      return ($a << 24 | $r << 16 | $g << 8 | $b);
+    }
+  }
+  // Don't try this with a 32-bit integer
+  private function int_to_rgb($rgb) {
+    $r = ($rgb >> 16) & 0xFF;
+    $g = ($rgb >> 8) & 0xFF;
+    $b = $rgb & 0xFF;
+    return array($r, $g, $b);
+  }
+  private function hex_to_rgb($hex) {
+    $hex = preg_replace("/[^0-9A-Fa-f]/", '', $hex); 
+    $rgbArray = array(); 
+    if (strlen($hex) == 6) { //If a proper hex code, convert using bitwise operation. No overhead... faster
+      $colorVal = hexdec($hex);
+      $rgbArray[] = 0xFF & ($colorVal >> 0x10);
+      $rgbArray[] = 0xFF & ($colorVal >> 0x8);
+      $rgbArray[] = 0xFF & $colorVal;
+    }
+    return $rgbArray;
+  }
+
 }
