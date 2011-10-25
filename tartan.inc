@@ -2,23 +2,19 @@
 class LyzaTartan {
   public $name;
   
+  private $sett;
+  private $description;
   private $patternScale;
   private $stripe;
-  
-  private $sett;
-  private $pivots;
-
-  private $width;
-  private $height;
-  
-  private $description;
   
   private $warp;
   private $weft;
   private $weave;
-  
-  private $ready;
+  private $width;
+  private $height;
 
+  private $ready;
+  
   function __construct($name, $sett=array(), $patternScale=1) {
     $this->name = $name;
     $this->setSett($sett);
