@@ -261,7 +261,32 @@ class LyzaTartan {
     return TARTAN_XML_DIR . self::sanitize($this->name) . '.xml';
   }
 
-  public function toXml($to_file=TRUE) {
+  /*
+   * Generate XML (via toXML()) and write to file.
+   */
+  public function writeXML() {
+    $tartan_xml = $this->toXML();
+    // Use a DOMDocument to format the XML
+    $dom = new DOMDocument('1.0');
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true; 
+    $dom->loadXML($tartan_xml);
+
+      if (!$this->name) {
+        return false;
+      }
+      $fp = fopen(TARTAN_XML_DIR . self::sanitize($this->name, TRUE) . '.xml', 'w');
+      if ($fp) {
+        fwrite($fp, $dom->saveXML());
+        fclose($fp);
+      }
+    
+  }
+
+  /*
+   * Generate XML string representing tartan pattern.
+   */
+  public function toXml() {
     $tartan_xml = '';
     $tartan  = new SimpleXMLElement('<tartan />');
     $tartan->addAttribute('name', $this->name);
@@ -277,22 +302,6 @@ class LyzaTartan {
       $stitch->addAttribute('count', $settlet['count']);
     }
     $tartan_xml = $tartan->asXML();
-    // Use a DOMDocument to format the XML
-    $dom = new DOMDocument('1.0');
-    $dom->preserveWhiteSpace = false;
-    $dom->formatOutput = true; 
-    $dom->loadXML($tartan_xml);
-
-    if ($to_file) {
-      if (!$this->name) {
-        return false;
-      }
-      $fp = fopen(TARTAN_XML_DIR . self::sanitize($this->name, TRUE) . '.xml', 'w');
-      if ($fp) {
-        fwrite($fp, $dom->saveXML());
-        fclose($fp);
-      }
-    }
     return $tartan_xml;
   }
   

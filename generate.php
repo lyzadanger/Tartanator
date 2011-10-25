@@ -23,7 +23,7 @@ if (isset($_POST['tartan_info'])) {
   $tartan->setDescription(strip_tags(stripslashes($_POST['tartan_info']), '<a><p><strong><em><br><ul><li><ol><h1><h2><h3><h4><h5><h6>'));
 }
 
-$xml = $tartan->toXml();
+$xml = $tartan->writeXml();
 
 // Support jQuery Mobile automatic ajax "caching"
 if (empty($name)) {
