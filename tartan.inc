@@ -15,10 +15,9 @@ class LyzaTartan {
 
   private $ready;
   
-  function __construct($name, $sett=array(), $patternScale=1) {
+  function __construct($name='') {
     $this->name = $name;
-    $this->setSett($sett);
-    $this->setScale($patternScale, 2);
+    $this->setStripeSize(2);      // Default stripe size is 2
     $this->ready = false;
   }
   /**

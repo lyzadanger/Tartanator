@@ -14,7 +14,9 @@ for($i=0; $i < sizeof($_POST['colors']); $i++) {
   }
 }
 $name = stripslashes($_POST['name']);
-$tartan = new LyzaTartan($name, $sett, 1);
+$tartan = new LyzaTartan($name);
+
+$tartan->setSett($sett);
 $tartan->setDynamicScale($width);
 $tartan->setStripeSize($stripe);
 if (isset($_POST['tartan_info'])) {
