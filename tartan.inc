@@ -2,7 +2,7 @@
 class LyzaTartan {
   public $name;
   
-  private $pattern_scale;
+  private $patternScale;
   private $stripe;
   
   private $sett;
@@ -19,10 +19,10 @@ class LyzaTartan {
   
   private $ready;
 
-  function __construct($name, $sett=array(), $pattern_scale=1) {
+  function __construct($name, $sett=array(), $patternScale=1) {
     $this->name = $name;
     $this->setSett($sett);
-    $this->setScale($pattern_scale, 2);
+    $this->setScale($patternScale, 2);
     $this->ready = false;
   }
   /**
@@ -73,7 +73,7 @@ class LyzaTartan {
     $this->ready = false;
   }
   public function setPatternScale($scale) {
-    $this->pattern_scale = $scale;
+    $this->patternScale = $scale;
     $this->ready = false;
   }
   public function setStripeSize($size) {
@@ -91,7 +91,7 @@ class LyzaTartan {
       $this->init();
     }
     $factor = $target_width / $this->width;
-    $this->pattern_scale = $factor;
+    $this->patternScale = $factor;
     $this->ready = false;
   }
   public function setDescription($description) {
@@ -134,7 +134,7 @@ class LyzaTartan {
    * for the warp and the weft.
    */
   private function buildChunk($threads) {
-    $my_count = $threads['count'] * $this->pattern_scale;
+    $my_count = $threads['count'] * $this->patternScale;
     $my_color = 0;
     if (is_string($threads['color']) && strpos($threads['color'], '#') !== FALSE) {
       $threads['color'] = $this->hex_to_rgb($threads['color']);
