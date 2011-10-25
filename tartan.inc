@@ -2,10 +2,10 @@
 class LyzaTartan {
   public $name;
   
-  private $sett;
-  private $description;
-  private $patternScale;
-  private $stripe;
+  public  $sett;
+  public  $description;
+  public  $patternScale;
+  public  $stripe;
   
   private $warp;
   private $weft;
@@ -91,9 +91,6 @@ class LyzaTartan {
   }
   public function setDescription($description) {
     $this->description = $description;
-  }
-  public function getDescription() {
-    return $this->description;
   }
   
   /**
@@ -311,8 +308,8 @@ class LyzaTartan {
     $tartan->addAttribute('name', $this->name);
     $tartan->addAttribute('stripe', $this->stripe);
     $tartan->addAttribute('scale', 1);
-    if ($this->getDescription()) {
-      $tartan->addChild('description', $this->getDescription());
+    if ($this->description) {
+      $tartan->addChild('description', $this->description);
     }
     $stitches = $tartan->addChild('stitches');
     foreach ($this->sett as $settlet) {
