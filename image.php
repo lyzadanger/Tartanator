@@ -6,7 +6,7 @@ if ($_GET['name']) {
   $tartan = new LyzaTartan();
   $ok = $tartan->fromXml($base);
   if (isset($_GET['width'])) {
-    $tartan->setDynamicScale($_GET['width']);
+    $tartan->setTargetWidth($_GET['width']);
   }
   $tartan->showImage();
 }
