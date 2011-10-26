@@ -30,9 +30,11 @@ foreach ($tartans as $base) {
     $first_letter = $letter;
   }
   $base = $tartan->getBaseName();
-  $items[$display_name] .= sprintf('<li><a href="tartans/%s.html"><img src="tartans/images/%s-160.png" alt="%s" />
+  $items[$display_name] .= sprintf('<li><a href="%s%s.html"><img src="%simages/%s-160.png" alt="%s" />
     <h3>%s</h3></a></li>',
+    PUBLIC_TARTAN_DIR,
     $base,
+    PUBLIC_TARTAN_DIR,
     $base,
     $display_name,
     $display_name);
