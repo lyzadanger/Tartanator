@@ -126,11 +126,8 @@
       });	
       return false;
     }
-    url = $(this).attr('action');
     // Append the name as a GET param as well, to support
     // re-rendering the page when user hits the forward button
-    $(this).attr('action', url + '?name=' + $nameInput.val() + '&width=300');
-    $('[name=redirect_to_image]').val('false');
     return true;
   }
   
