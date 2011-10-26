@@ -95,7 +95,6 @@
         </ul>
 
         <div data-role="fieldcontain">
-          <input type="hidden" name="redirect_to_image" value="true">
           <input type="submit" name="buildtartan" id="buildtartan" value="Make it!" data-role="button" />
         </div>
 
