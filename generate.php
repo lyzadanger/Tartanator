@@ -2,8 +2,7 @@
 require('config.php');
 require('tartan.inc');
 
-$width = 280;
-$stripe = 2;
+
 $sett = array();
 
 for($i=0; $i < sizeof($_POST['colors']); $i++) {
@@ -17,20 +16,15 @@ $name = stripslashes($_POST['name']);
 $tartan = new LyzaTartan($name);
 
 $tartan->setSett($sett);
-$tartan->setTargetWidth($width);
-$tartan->setStripeSize($stripe);
 if (isset($_POST['tartan_info'])) {
-  $tartan->setDescription(strip_tags(stripslashes($_POST['tartan_info']), '<a><p><strong><em><br><ul><li><ol><h1><h2><h3><h4><h5><h6>'));
+  $tartan->setDescription(strip_tags(stripslashes($_POST['tartan_info'])));
 }
 
 $xml = $tartan->writeXML();
+$tartan->setTargetWidth(160);
+$tartan->writeImage();
+$tartan->setTargetWidth(240);
+$tartan->writeImage();
 
-// Support jQuery Mobile automatic ajax "caching"
-if (empty($name)) {
-  $name = $_GET['name'];
-}
-
-$redirect_path = ($_POST['redirect_to_image'] === "true") ? 'image.php' : 'new_tartan.php';
-header('Location:' . $redirect_path . '?name=' . $name . '&width=' . $width);
-exit();
-
+header('Location: tartans/images/' . $tartan->getBaseName() . '-240.png');
+exit;

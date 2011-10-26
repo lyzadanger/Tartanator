@@ -8,5 +8,5 @@ if ($_GET['name']) {
   if (isset($_GET['width'])) {
     $tartan->setTargetWidth($_GET['width']);
   }
-  $tartan->showImage();
+  $tartan->toImage(FALSE);
 }

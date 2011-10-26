@@ -163,7 +163,6 @@ class LyzaTartan {
    * @return Image resource 
    */
   private function buildImage($width=NULL) {
-    // TODO: Check to see if image file already exists
     if ($width) {
       $this->setTargetWidth($width);
     }
@@ -187,52 +186,42 @@ class LyzaTartan {
     }
     return $im;
   }
-  
-  /**
-   * Build and deliver an image to the browser. Outputs!
-   *
-   * @param int $width    Approximate desired pixel width
-   * @return NULL
-   */
-  public function showImage($width=NULL) {
-    $im = $this->buildImage($width);
-    header('Content-Type: image/png');
-    imagepng($im);
-  }
-  
-  public function saveImage($width=NULL) {
-    $im = $this->buildImage($width);
-    // Filename: filepath + NEED TO DETERMINE NAME + whatever
-  }
-  
-  public function toImage($display=TRUE, $cache=TRUE) {
     
-  }
-  
-  /**
-   * Generate a PNG from the current weave.
+  /*
+   * Generate and display an image
    */
-  public function image($save=FALSE, $display=TRUE, $save_to=NULL) {
-    $im = $this->buildImage();
-    if ($save) {
-      // Why yes, as written, this WOULD overwrite another tartan with 
-      // the same name. 
-      $save_to = ($save_to) ? $save_to : TARTAN_IMAGE_DIR . self::sanitize($this->name, TRUE) . '-' . $this->width . '.png';
-      imagepng($im, $save_to);
-      imagedestroy($im);
-      if ($display) {
-        $fp = fopen($save_to, 'rb');
-        header('Content-Type: image/png');
-        fpassthru($fp);
-        exit;
-      }
+  public function toImage($cache=TRUE) {
+    if ($cache) {
+      $this->writeImage();
     }
-    else if ($display) {
+    $img_file = $this->getImageFilename();
+    if (file_exists($img_file)) {
+      $fp = fopen($img_file, 'rb');
+      header('Content-Type: image/png');
+      fpassthru($fp);
+      exit;
+    }
+    else if (!$cache) {
+      $im = $this->buildImage();
       header('Content-Type: image/png');
       imagepng($im);
     }
   }
   
+  /*
+   * Generate and cache image of tartan at present settings
+   */
+  public function writeImage($force_recreate=FALSE) {
+    $img_file = $this->getImageFilename();
+    if (file_exists($img_file) && !$force_recreate) {
+      return TRUE;
+    }
+    $im = $this->buildImage();
+    $success = imagepng($im, $img_file);
+    imagedestroy($im);
+    return $success;
+    
+  }
   
   public static function sanitize($string = '') {
     $is_filename = TRUE;
@@ -241,9 +230,16 @@ class LyzaTartan {
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
   }
   
-  public function getImageFilename($width=NULL) {
+  public function getImageFilename($img_type='PNG') {
     $width = ($this->targetWidth) ? $this->targetWidth : $this->width;
-    
+    $extension = '';
+    switch($img_type) {
+      case 'PNG':
+      default:
+        $extension = 'png';
+    }
+    $filename = sprintf("%s%s-%s.%s", TARTAN_IMAGE_DIR, $this->getBaseName(), $width, $extension);
+    return $filename;
   }
   
   public function getXMLFilename() {
@@ -251,7 +247,7 @@ class LyzaTartan {
     return $filename;
   }
 
-  private function getBaseName($test_exists=TRUE) {
+  public function getBaseName($test_exists=TRUE) {
     if ($this->base) {
       return $this->base;
     }
@@ -273,8 +269,6 @@ class LyzaTartan {
       return $base;
     }
   }
-  
-
 
   /*
    * Generate XML (via toXML()) and write to file.
@@ -321,6 +315,21 @@ class LyzaTartan {
     return $tartan_xml;
   }
   
+  public function getStitchCount() {
+    if (!$this->sett || !is_array($this->sett)) {
+      return 0;
+    }
+    $total = 0;
+    foreach ($this->sett as $index => $stitch) {
+      $total += $stitch['count'];
+      if ($index != 0 && $index != sizeof($this->sett) - 1) {
+        // Account for pivots
+        $total += $stitch['count'];
+      }
+    }
+    return $total;
+  }
+  
   /**
    * Setters
    */
@@ -342,13 +351,11 @@ class LyzaTartan {
     $this->ready = false;
   }
   public function setTargetWidth($target_width) {
-    $this->setPatternScale(1);
-    if (!$this->ready) {
-      $this->init();
-    }
-    $factor = $target_width / $this->width;
+    $stitches = $this->getStitchCount();
+    $stitches = ($stitches) ? $stitches : 1;
+    $factor = $target_width / $stitches;
     $this->targetWidth = $target_width;
-    $this->patternScale = $factor;
+    $this->setPatternScale($factor);
     $this->ready = false;
   }
   public function setDescription($description) {
