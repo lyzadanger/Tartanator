@@ -7,7 +7,7 @@ if (   is_array($_POST)
     && sizeof($_POST)
     && array_key_exists('colors', $_POST)
     && is_array($_POST['colors'])
-    && array_key_exists($_POST['name'])) {
+    && array_key_exists('name', $_POST)) {
   $post_ready = TRUE;   
 }
 
@@ -47,4 +47,3 @@ if ($post_ready) {
   exit();
 
 }
-
