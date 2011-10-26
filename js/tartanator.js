@@ -140,7 +140,6 @@
   // When a COLOR is selected from the select list
   function onColorSelectChange() {
     setColorSelectStyle();
-    $('#size-0').focus();
   }
 
   // Set the background color of the select widget to match the color value
