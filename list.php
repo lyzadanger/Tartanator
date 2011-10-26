@@ -1,4 +1,5 @@
 <?php
+$start = microtime(TRUE);
 require('config.php');
 require('tartan.inc');
 
@@ -17,11 +18,10 @@ if (is_dir($dir)) {
         closedir($dh);
     }
 }
-
 foreach ($tartans as $base) {
   $tartan = new LyzaTartan();
+  
   $tartan->fromXML($base);
-  $tartan->writeImage(160); // Create image if it doesn't exist; it should.
   $display_name = ucwords($tartan->name);
   $items[$display_name] = '';
   $letter = substr($display_name, 0, 1);
@@ -38,8 +38,12 @@ foreach ($tartans as $base) {
     $display_name);
   unset($tartan);
 }
+$point1 = microtime(TRUE);
+
 
 ksort($items);
+$end = microtime(TRUE);
 foreach($items as $li) {
   print $li;
 }
+?>

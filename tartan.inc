@@ -29,6 +29,8 @@ class LyzaTartan {
    * (i.e. pixel matrices for image)
    * A call to this is needed whenever the object is dirtied
    * by changes to its attributes.
+   *
+   * This method is very expensive and slow. It is only called when needed.
    */
   private function init() {
     $this->weft       = array();
@@ -64,7 +66,7 @@ class LyzaTartan {
         $this->setStripeSize($stripe);
         $this->setPatternScale($scale);
         $this->XMLFilename = $filename;
-        $this->init();
+        $this->ready = FALSE;
         return TRUE;
       }
     }
@@ -214,10 +216,8 @@ class LyzaTartan {
   /*
    * Generate and cache image of tartan at present settings
    */
-  public function writeImage($target_width=NULL, $force_recreate=FALSE) {
-    if ($target_width) {
-      $this->setTargetWidth($target_width);
-    }
+  public function writeImage($force_recreate=FALSE) {
+
     $img_file = $this->getImageFilename();
     if (file_exists($img_file) && !$force_recreate) {
       return TRUE;
