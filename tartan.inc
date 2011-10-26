@@ -11,9 +11,10 @@ class LyzaTartan {
   private $weft;
   private $weave;
   private $width;
+  private $targetWidth;
   private $height;
   private $XMLFilename;
-  private $base;
+  private $base;            // Filesystem-friendly name of tartan
 
   private $ready;
   
@@ -70,11 +71,13 @@ class LyzaTartan {
     return FALSE;
   }
 
-  
   /**
    * Using the current state of the attributes, build the
    * warp and weft arrays to be used for generating a visual
    * representation of the pattern.
+   *
+   * Result: Warp and weft arrays from which an image
+   * can be "woven"
    */
   private function buildPattern() {
     $this->warp = array();
@@ -119,6 +122,8 @@ class LyzaTartan {
   /**
    * This is sort of like a rasterizing method. Using the current
    * warp and weft, "weave" together a matrix of colors.
+   *
+   * Result: We're ready to generate a raster image, when needed
    */
   private function buildWeave() {
     $this->weave = array();
@@ -152,15 +157,15 @@ class LyzaTartan {
   }
   
   /**
-   * Build a PNG image and RETURN it.
+   * Build an image  and RETURN it.
    *
    * @param int $width      Desired approximate pixel width
    * @return Image resource 
    */
-  public function buildImage($width=NULL) {
+  private function buildImage($width=NULL) {
     // TODO: Check to see if image file already exists
     if ($width) {
-      $this->setDynamicScale($width);
+      $this->setTargetWidth($width);
     }
     if (!$this->ready) {
       $this->init();
@@ -200,6 +205,10 @@ class LyzaTartan {
     // Filename: filepath + NEED TO DETERMINE NAME + whatever
   }
   
+  public function toImage($display=TRUE, $cache=TRUE) {
+    
+  }
+  
   /**
    * Generate a PNG from the current weave.
    */
@@ -233,7 +242,8 @@ class LyzaTartan {
   }
   
   public function getImageFilename($width=NULL) {
-  
+    $width = ($this->targetWidth) ? $this->targetWidth : $this->width;
+    
   }
   
   public function getXMLFilename() {
@@ -264,13 +274,7 @@ class LyzaTartan {
     }
   }
   
-  private function setBase($base) {
-    $this->base = $base;
-  }
-  
-  private function clearBase() {
-    $this->base = NULL;
-  }
+
 
   /*
    * Generate XML (via toXML()) and write to file.
@@ -337,17 +341,24 @@ class LyzaTartan {
     $this->setStripeSize($sett);
     $this->ready = false;
   }
-  public function setDynamicScale($target_width) {
+  public function setTargetWidth($target_width) {
     $this->setPatternScale(1);
     if (!$this->ready) {
       $this->init();
     }
     $factor = $target_width / $this->width;
+    $this->targetWidth = $target_width;
     $this->patternScale = $factor;
     $this->ready = false;
   }
   public function setDescription($description) {
     $this->description = $description;
+  }
+  private function setBase($base) {
+    $this->base = $base;
+  }
+  private function clearBase() {
+    $this->base = NULL;
   }
 
   /**
