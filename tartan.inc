@@ -208,6 +208,18 @@ class LyzaTartan {
     }
   }
   
+  public function writeHTML($force_recreate=FALSE) {
+    $filename = $this->getHTMLFilename();
+    ob_start();
+    include(TARTAN_HTML_DIR . 'tartan-template.php');
+    $string = ob_get_clean();
+    $fp = fopen($filename, 'w+');
+    if ($fp) {
+      fwrite($fp, $string);
+      fclose($fp);
+    }
+  }
+  
   /*
    * Generate and cache image of tartan at present settings
    */
@@ -228,6 +240,11 @@ class LyzaTartan {
     $string = urldecode(stripslashes($string));
     $string = preg_replace('/[^\w\-'. ($is_filename ? '~_\.' : ''). ']+/u', '-', $string);
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
+  }
+  
+  public function getHTMLFilename() {
+    $filename = sprintf('%s%s.html', TARTAN_HTML_DIR, $this->getBaseName());
+    return $filename;
   }
   
   public function getImageFilename($img_type='PNG') {
