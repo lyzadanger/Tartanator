@@ -107,10 +107,10 @@ class LyzaTartan {
     $my_count = $threads['count'] * $this->patternScale;
     $my_color = 0;
     if (is_string($threads['color']) && strpos($threads['color'], '#') !== FALSE) {
-      $threads['color'] = $this->hex_to_rgb($threads['color']);
+      $threads['color'] = self::hexToRGB($threads['color']);
     }
     if (is_array($threads['color'])) {
-      $my_color = $this->rgb_to_int($threads['color'][0], $threads['color'][1], $threads['color'][2]);
+      $my_color = self::RGBToInt($threads['color'][0], $threads['color'][1], $threads['color'][2]);
     }
     $my_chunk = array_fill(sizeof($this->warp), $my_count, $my_color);  
     return $my_chunk;
@@ -174,7 +174,7 @@ class LyzaTartan {
       for ($y = 0; $y < $this->height; $y++) {
         $rgb = $this->weave[$x][$y];
         if (!array_key_exists("color_" . $rgb, $colors)) {
-          $channels = $this->int_to_rgb($rgb);
+          $channels = self::intToRGB($rgb);
           $colors["color_" . $rgb] = imagecolorallocate($im, $channels[0], $channels[1], $channels[2]);
         }
         $ok = imagesetpixel($im, $x, $y, $colors["color_" . $rgb]);
@@ -353,7 +353,7 @@ class LyzaTartan {
   /**
    * Utility methods to convert colors
    */
-  private function rgb_to_int($r, $g, $b, $a=NULL) {
+  public static function RGBToInt($r, $g, $b, $a=NULL) {
     if (!$a) {
       return ($r << 16 | $g << 8 | $b);
     }
@@ -362,13 +362,13 @@ class LyzaTartan {
     }
   }
   // Don't try this with a 32-bit integer
-  private function int_to_rgb($rgb) {
+  public static function intToRGB($rgb) {
     $r = ($rgb >> 16) & 0xFF;
     $g = ($rgb >> 8) & 0xFF;
     $b = $rgb & 0xFF;
     return array($r, $g, $b);
   }
-  private function hex_to_rgb($hex) {
+  public static function hexToRGB($hex) {
     $hex = preg_replace("/[^0-9A-Fa-f]/", '', $hex); 
     $rgbArray = array(); 
     if (strlen($hex) == 6) { //If a proper hex code, convert using bitwise operation. No overhead... faster
