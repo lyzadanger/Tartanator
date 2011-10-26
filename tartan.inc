@@ -210,6 +210,24 @@ class LyzaTartan {
       imagepng($im);
     }
   }
+
+  /*
+   * Generate and cache image of tartan at present settings
+   */
+  public function writeImage($target_width=NULL, $force_recreate=FALSE) {
+    if ($target_width) {
+      $this->setTargetWidth($target_width);
+    }
+    $img_file = $this->getImageFilename();
+    if (file_exists($img_file) && !$force_recreate) {
+      return TRUE;
+    }
+    $im = $this->buildImage();
+    $success = imagepng($im, $img_file);
+    imagedestroy($im);
+    return $success;
+    
+  }
   
   /**
    * Write an HTML file to the filesystem for this
@@ -225,21 +243,6 @@ class LyzaTartan {
       fwrite($fp, $string);
       fclose($fp);
     }
-  }
-  
-  /*
-   * Generate and cache image of tartan at present settings
-   */
-  public function writeImage($force_recreate=FALSE) {
-    $img_file = $this->getImageFilename();
-    if (file_exists($img_file) && !$force_recreate) {
-      return TRUE;
-    }
-    $im = $this->buildImage();
-    $success = imagepng($im, $img_file);
-    imagedestroy($im);
-    return $success;
-    
   }
   
   public static function sanitize($string = '') {
