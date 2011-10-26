@@ -3,3 +3,4 @@ config.php
 .htaccess
 *.bak
 tartans/icons
+tartans/*.html
