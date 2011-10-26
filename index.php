@@ -24,7 +24,6 @@
 
     <div data-role="header" data-position="fixed">
       <h1>Tartan Builder</h1>
-      <a href="dialogs/howto.html" data-rel="dialog" data-icon="info" class="ui-btn-right" data-role="button" data-theme="b">How To</a>
     </div><!-- /header -->
 
     <div data-role="content">  
