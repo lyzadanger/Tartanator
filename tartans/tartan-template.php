@@ -12,7 +12,10 @@
 
 <div data-role="page" id="<?php print $this->getBaseName(); ?>">
   <style type="text/css">
-    #<?php print $this->getBaseName(); ?> { background-image: url('images/<?php print $this->getBaseName(); ?>-240.png'); }
+    #<?php print $this->getBaseName(); ?> { 
+      background-image: url('<?php print PUBLIC_TARTAN_DIR ?>/images/<?php print $this->getBaseName(); ?>-240.png'); 
+      min-height: 240px;
+    }
   </style>
 	<div data-role="header" data-position="fixed">
     <a href="../tartans.html" data-rel="back" data-direction="reverse" data-icon="back" />Back</a>

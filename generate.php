@@ -42,4 +42,9 @@ if ($post_ready) {
   $tartan->writeImage();
   $tartan->writeHTML();
   // Use $tartan->getBaseName() to get the base filename for a tartan.
+
+  header('Location:' . $tartan->getPublicPath());
+  exit();
+
 }
+

@@ -262,6 +262,11 @@ class LyzaTartan {
     $filename = sprintf('%s%s.html', TARTAN_HTML_DIR, $this->getBaseName());
     return $filename;
   }
+
+  public function getPublicPath() {
+    $filename = sprintf('%s%s.html', PUBLIC_TARTAN_DIR, $this->getBaseName());
+    return $filename;
+  }
   
   /*
    * Return full path to where an image should either exist or be written
