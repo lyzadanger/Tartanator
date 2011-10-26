@@ -4,6 +4,9 @@ require('tartan.inc');
 
 $sett = array();
 
+/*
+ * Form processing
+ */
 for($i=0; $i < sizeof($_POST['colors']); $i++) {
   // check for submitted blank values
   if ($_POST['colors'][$i] && $_POST['sizes'][$i]) {
@@ -19,6 +22,9 @@ if (isset($_POST['tartan_info'])) {
   $tartan->setDescription(strip_tags(stripslashes($_POST['tartan_info'])));
 }
 
+/*
+ * Writing XML, images, HTML
+ */
 $xml = $tartan->writeXML();
 $tartan->setTargetWidth(160);
 $tartan->writeImage();
