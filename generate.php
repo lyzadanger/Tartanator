@@ -2,7 +2,6 @@
 require('config.php');
 require('tartan.inc');
 
-
 $sett = array();
 
 for($i=0; $i < sizeof($_POST['colors']); $i++) {
@@ -25,6 +24,5 @@ $tartan->setTargetWidth(160);
 $tartan->writeImage();
 $tartan->setTargetWidth(240);
 $tartan->writeImage();
-
-header('Location: tartans/images/' . $tartan->getBaseName() . '-240.png');
-exit;
+$tartan->writeHTML();
+// Use $tartan->getBaseName() to get the base filename for a tartan.
