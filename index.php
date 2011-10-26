@@ -15,7 +15,6 @@
     });
   </script>
   <script src="js/jquery.mobile-1.0rc1.min.js"></script>
-  <script src="js/tartanator.js"></script>
 
 </head> 
 <body> 
@@ -28,6 +27,7 @@
     </div><!-- /header -->
 
     <div data-role="content">  
+      <script src="js/tartanator.js"></script>
       <form method="post" action="generate.php" id="tartanator_form">
         <ul data-role="listview" id="tartanator_form_list">
           <li data-role="list-divider">Tell us about your tartan</li>
