@@ -116,7 +116,7 @@
 
   // Submit the form
   function onFormSubmit () {
-    var url;
+    var url, $form;
     if (!$nameInput.val() || !$colorList.find('li').length) {
      $.mobile.changePage( "dialogs/tartan-data-required.html", {
        transition: "pop",
@@ -125,8 +125,16 @@
       });	
       return false;
     }
+    
+    // jQM's automatic ajax navigation won't handle redirects well.
+    // Override with our own form posting
+    // For ajax requests, the server will respond with the created tartan URL
+    $form = $(this);
+    $.post($form.attr('action'), $form.serialize(),  function (url) {
+      $.mobile.changePage(url);
+    });
 
-    return true;
+    return false;
   }
   
   // When a COLOR is selected from the select list

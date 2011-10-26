@@ -43,7 +43,11 @@ if ($post_ready) {
   $tartan->writeHTML();
   // Use $tartan->getBaseName() to get the base filename for a tartan.
 
-  header('Location:' . $tartan->getPublicPath());
-  exit();
+  if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+    echo $tartan->getPublicPath();
+  } else {
+    header('Location:' . $tartan->getPublicPath());
+    exit();
+  }
 
 }
