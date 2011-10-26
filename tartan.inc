@@ -157,7 +157,10 @@ class LyzaTartan {
   }
   
   /**
-   * Build an image  and RETURN it.
+   * Build an image  and RETURN it. At this point
+   * we could output a PNG, GIF, JPG, whatever. Right
+   * now I'm doing PNGs, but there's no reason one couldn't
+   * do other image formats.
    *
    * @param int $width      Desired approximate pixel width
    * @return Image resource 
@@ -208,6 +211,10 @@ class LyzaTartan {
     }
   }
   
+  /**
+   * Write an HTML file to the filesystem for this
+   * tartan. Use a template.
+   */
   public function writeHTML($force_recreate=FALSE) {
     $filename = $this->getHTMLFilename();
     ob_start();
@@ -242,11 +249,25 @@ class LyzaTartan {
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
   }
   
+  /*
+   * Return full path of HTML file for this tartan.
+   * Intended to be used to write HTML files to that path.
+   *
+   * @return string filename      Full path
+   */
   public function getHTMLFilename() {
     $filename = sprintf('%s%s.html', TARTAN_HTML_DIR, $this->getBaseName());
     return $filename;
   }
   
+  /*
+   * Return full path to where an image should either exist or be written
+   * to for this tartan.
+   *
+   * @param string $img_type      Currently this only supports 'PNG'
+   *
+   * @return string              Full path
+   */
   public function getImageFilename($img_type='PNG') {
     $width = ($this->targetWidth) ? $this->targetWidth : $this->width;
     $extension = '';
@@ -259,11 +280,22 @@ class LyzaTartan {
     return $filename;
   }
   
+  /**
+   * Return full path to where the XML file is or should be.
+   * 
+   * @return string             Full path
+   */
   public function getXMLFilename() {
     $filename = sprintf('%s%s.xml', TARTAN_XML_DIR, $this->getBaseName());
     return $filename;
   }
 
+  /*
+   * This is a bit complex, but in a nutshell, this should
+   * return a string of the filesystem-safe "filename" (no path or extension)
+   * to use for tartan-related resources (images, xml, html)
+   * 
+   */
   public function getBaseName($test_exists=TRUE) {
     if ($this->base) {
       return $this->base;
@@ -332,6 +364,12 @@ class LyzaTartan {
     return $tartan_xml;
   }
   
+  /**
+   * How many total stitches are in this pattern?
+   * Look at the 'count' element of each piece of the
+   * sett. Then double that, except for the first and
+   * last stitches (emulating how tartans are woven).
+   */
   public function getStitchCount() {
     if (!$this->sett || !is_array($this->sett)) {
       return 0;
@@ -381,6 +419,12 @@ class LyzaTartan {
   private function setBase($base) {
     $this->base = $base;
   }
+  /**
+   * I don't anticipate this needing to happen, but
+   * thought I'd leave an escape valve. Once a base
+   * has been determined for a given tartan, it shouldn't
+   * really change.
+   */
   private function clearBase() {
     $this->base = NULL;
   }
