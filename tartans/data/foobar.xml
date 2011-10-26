@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<tartan name="Foobar" stripe="2" scale="1">
-  <stitches>
-    <stitch color="#8A2BE2" count="2"/>
-    <stitch color="#ff3344" count="18"/>
-    <stitch color="#29292b" count="10"/>
-  </stitches>
-</tartan>

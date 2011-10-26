@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<tartan name="Barclay Dress" scale="4" stripe="2">
-<stitches>
-	<stitch color="#ffffff" count="2" />
-	<stitch color="#ffff00" count="12" />
-	<stitch color="#000000" count="12" />
-	<stitch color="#ffff00" count="2" />
-</stitches>
-</tartan>
