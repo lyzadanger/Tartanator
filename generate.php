@@ -1,14 +1,14 @@
 <?php
-require('config.php');
-require('tartan.inc');
+require_once('config.php');
+require_once('tartan.inc');
 
-$post_ready = TRUE;
-if (   !is_array($_POST)
-    || !sizeof($_POST)
-    || array_key_exists('colors', $_POST)
-    || !is_array($_POST['colors'])
-    || !array_key_exists($_POST['name'])) {
-  $post_ready = FALSE;   
+$post_ready = FALSE;
+if (   is_array($_POST)
+    && sizeof($_POST)
+    && array_key_exists('colors', $_POST)
+    && is_array($_POST['colors'])
+    && array_key_exists($_POST['name'])) {
+  $post_ready = TRUE;   
 }
 
 if ($post_ready) {
