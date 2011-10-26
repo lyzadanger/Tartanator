@@ -45,6 +45,7 @@
   // This is the button that adds each color-size combo to the "list"
   // of tartan pattern elements
   function buildAddButton() {
+    if ($('#add-color-container').length) { return true; }
     var li = $('<li></li>').attr({
       'data-role' : 'fieldcontain',
       'id'        : 'add-color-container'
