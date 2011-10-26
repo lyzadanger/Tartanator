@@ -18,10 +18,10 @@ class LyzaTartan {
   private $ready;
   
   function __construct($name='') {
-    $this->name = $name;
+    $this->name       = $name;
     $this->setPatternScale(1);    // Default pattern multiplier
     $this->setStripeSize(2);      // Default stripe size is 2
-    $this->ready = false;
+    $this->ready      = false;
   }
   /**
    * Build the warp and weft and generate the weave 
@@ -39,13 +39,15 @@ class LyzaTartan {
     $this->buildWeave();
     
     $this->ready      = true;
+    $this->base       = $this->getBaseName();
   }
   
   /**
    * Populate tartan attributes from XML file
    */
-  public function fromXml($name) {
-    $filename = $this->getXMLFilename(FALSE);
+  public function fromXML($base) {
+    $this->setBase(self::sanitize($base));
+    $filename = $this->getXMLFilename();
     if (file_exists($filename)) {
       $xml = simplexml_load_file($filename);
       if ($xml) {
@@ -150,7 +152,7 @@ class LyzaTartan {
   }
   
   /**
-   * Build a PNG image and return it.
+   * Build a PNG image and RETURN it.
    *
    * @param int $width      Desired approximate pixel width
    * @return Image resource 
@@ -190,7 +192,7 @@ class LyzaTartan {
   public function showImage($width=NULL) {
     $im = $this->buildImage($width);
     header('Content-Type: image/png');
-    imagepng($im);    
+    imagepng($im);
   }
   
   public function saveImage($width=NULL) {
@@ -230,15 +232,19 @@ class LyzaTartan {
     return mb_strtolower(preg_replace('/--+/u', '-', $string), 'UTF-8');
   }
   
-  public function getXMLFilename($test_exists=FALSE) {
-    if ($this->XMLFilename && !$test_exists) {
-      return $this->XMLFilename;
-    }
-    $filename = sprintf('%s%s.xml', TARTAN_XML_DIR, $this->getBaseName($test_exists));
-    return $filename;
+  public function getImageFilename($width=NULL) {
+  
   }
   
-  private function getBaseName($test_exists) {
+  public function getXMLFilename() {
+    $filename = sprintf('%s%s.xml', TARTAN_XML_DIR, $this->getBaseName());
+    return $filename;
+  }
+
+  private function getBaseName($test_exists=TRUE) {
+    if ($this->base) {
+      return $this->base;
+    }
     $base = self::sanitize($this->name);
     if ($test_exists) {
       $candidate = TARTAN_XML_DIR . $base . '.xml';
@@ -249,15 +255,21 @@ class LyzaTartan {
         $candidate_base = $base . '-' . (string) $tries;
         $candidate = sprintf("%s%s.xml", TARTAN_XML_DIR, $candidate_base);
       }
-      // Tartan doesn't get to "own" this filename until something is written TO it
-      // But it owns the basename, yes?
       $this->base = $candidate_base;
       return $candidate_base;  
     }
     else {
-      $this->base = $base;
+      $this->setBase($base);
       return $base;
     }
+  }
+  
+  private function setBase($base) {
+    $this->base = $base;
+  }
+  
+  private function clearBase() {
+    $this->base = NULL;
   }
 
   /*
@@ -274,8 +286,7 @@ class LyzaTartan {
       if (!$this->name) {
         return false;
       }
-      // TODO: UPDATE ME!!!
-      $filename = $this->getXMLFilename(TRUE);
+      $filename = $this->getXMLFilename();
       $fp = fopen($filename, 'w');
       if ($fp) {
         fwrite($fp, $dom->saveXML());
