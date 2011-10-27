@@ -1,4 +1,5 @@
 <?php
+require_once('../var/config.php');
 class LyzaTartan {
   public $name;
   

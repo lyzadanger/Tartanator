@@ -1,6 +1,6 @@
 <?php
-require_once('config.php');
-require_once('tartan.inc');
+require_once('var/config.php');
+require_once('inc/tartan.inc');
 
 /**
  * Check some required form ($_POST) elements.

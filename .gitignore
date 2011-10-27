@@ -1,5 +1,4 @@
-config.php
+var/config.inc
 .DS_Store
 .htaccess
-tartans/icons
 tartans/*.html

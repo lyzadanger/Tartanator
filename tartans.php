@@ -19,7 +19,7 @@
 
 	<div data-role="content">
     <ul data-role="listview" id="tartan-list">
-      <?php include('list.php'); ?>
+      <?php include('inc/list.php'); ?>
     </ul>
 	</div><!-- /content -->
 
