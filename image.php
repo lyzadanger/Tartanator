@@ -1,5 +1,5 @@
 <?php
-require_once('var/config.php');
+require_once('config.php');
 require_once('inc/tartan.inc');
 if ($_GET['name']) {
   $base = urldecode($_GET['name']);
