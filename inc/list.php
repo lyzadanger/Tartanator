@@ -3,7 +3,6 @@
  * Generate <li> elements for tartans dynamically, based on the HTML
  * files present in the tartans HTML directory.
  */
-require_once('../config.php');
 require_once('tartan.inc');
 
 $dir        = TARTAN_HTML_DIR;
