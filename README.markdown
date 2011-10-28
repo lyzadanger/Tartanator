@@ -1,9 +1,7 @@
 # Tartanator
 
 ## Configuration
-If you have this directory at your Web server's document root, you're probably good. Check that the `tartans` directory is writeable by your Web server's user.
-
-If you have this directory *not* at your document root, that's fine, too. Copy `config.inc.example` to `config.inc` and edit the settings here to reflect your path. You will probably only need to change the `PUBLIC_TARTAN_DIR` value.
+This code should in theory be config-less. It should be able to determine where it is installed relative to your Web server's `DOCUMENT_ROOT`. However, should you wish to alter this or the directories where tartan data, HTML and images are written, you can copy `config.inc.example` to `config.inc` and edit the settings therein.
 
 ## jQuery Mobile Images
 
