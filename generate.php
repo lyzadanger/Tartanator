@@ -47,15 +47,13 @@ function populate_tartan() {
 
 /**
  * Generate filesystem items for this tartan:
- * Images (2), HTML file, XML datafile.
+ * Image, HTML file, XML datafile.
  *
  * @param LyzaTartan $tartan    A populated LyzaTartan object
  */
 function generate_tartan($tartan) {
   $xml = $tartan->writeXML();
-  $tartan->setTargetWidth(160);
-  $tartan->writeImage();
-  $tartan->setTargetWidth(240);
+  $tartan->setTargetWidth(200);
   $tartan->writeImage();
   $tartan->writeHTML();
 }

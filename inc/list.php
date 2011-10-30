@@ -30,9 +30,9 @@ foreach ($tartans as $base) {
   $list_items[$display_name]  = '';
   // Munge together the HTML output
   $tartan_image = '';
-  if (file_exists(TARTAN_IMAGE_DIR . $base . '-160.png')) {
+  if (file_exists(TARTAN_IMAGE_DIR . $base . '-200.png')) {
     // Generate image tag if image exists
-    $tartan_image = sprintf('<img src="%simages/%s-160.png" alt="%s" />',
+    $tartan_image = sprintf('<img src="%simages/%s-200.png" alt="%s" />',
       PUBLIC_TARTAN_DIR,
       $base,
       $display_name);

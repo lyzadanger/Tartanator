@@ -13,8 +13,8 @@
 <div data-role="page" id="tartan-<?php print $this->getBaseName(); ?>">
   <style type="text/css">
     #tartan-<?php print $this->getBaseName(); ?> { 
-      background-image: url('<?php print PUBLIC_TARTAN_DIR ?>images/<?php print $this->getBaseName(); ?>-240.png'); 
-      min-height: 240px;
+      background-image: url('<?php print PUBLIC_TARTAN_DIR ?>images/<?php print $this->getBaseName(); ?>-200.png'); 
+      min-height: 200px;
     }
   </style>
 	<div data-role="header" data-position="fixed">
