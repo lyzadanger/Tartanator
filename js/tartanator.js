@@ -30,8 +30,12 @@
     $colorList.click(onColorListChange);
     $sizeSlider.change(onStitchSizeChange);
     $colorInputUI.change(onColorSelectChange);
-    $('#tartanator_form').submit(onFormSubmit);
   }
+
+  // Only add the form handler once, on DOM ready.
+  $(function () {
+    $('#tartanator_form').submit(onFormSubmit);
+  });
 
   // Add a color indication to each line of the custom jQM select menu
   function styleColorListItem (index, value) {
